@@ -1,0 +1,20 @@
+FROM nvidia/cuda:11.2.2-cudnn8-runtime-ubuntu20.04
+
+# Instala Node.js
+RUN apt-get update && \
+    apt-get install -y curl && \
+    curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+    apt-get install -y nodejs
+
+# Cria um diretório de trabalho
+WORKDIR /usr/src/app
+
+# Copia package.json e instala dependências
+COPY package*.json ./
+RUN npm install
+
+# Copia o restante do código da aplicação
+COPY . .
+
+# Define o comando padrão
+CMD ["node", "test-tf.js"]
